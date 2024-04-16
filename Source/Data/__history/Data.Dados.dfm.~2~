@@ -1,0 +1,5 @@
+object Dados: TDados
+  OldCreateOrder = False
+  Height = 395
+  Width = 538
+end

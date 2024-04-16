@@ -1,0 +1,14 @@
+unit Model.Combustivel;
+
+interface
+
+type
+  TCombustivel = class
+    Id: Integer;
+    Nome: string;
+    Valor: Double;
+  end;
+
+implementation
+
+end.

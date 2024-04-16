@@ -1,0 +1,52 @@
+unit Model.Bomba;
+
+interface
+
+uses
+  Model.Combustivel;
+
+type
+  TBomba = class
+  private
+    FDescricao: string;
+    FId: Integer;
+    FCombustivel: TCombustivel;
+    FIdTanque: Integer;
+  public
+    constructor Create(const AIdTanque: Integer; const ADescricao: string; const ACombustivel: TCombustivel); overload;
+    constructor Create(const AId, AIdTanque: Integer; const ADescricao: string; const ACombustivel: TCombustivel); overload;
+    property Id: Integer read FId;
+    property IdTanque: Integer read FIdTanque;
+    property Combustivel: TCombustivel read FCombustivel;
+    property Descricao: string read FDescricao;
+  end;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TBomba }
+
+constructor TBomba.Create(const AIdTanque: Integer;
+  const ADescricao: string; const ACombustivel: TCombustivel);
+begin
+  Create(-1, AIdTanque, ADescricao, ACombustivel);
+end;
+
+constructor TBomba.Create(const AId, AIdTanque: Integer;
+  const ADescricao: string; const ACombustivel: TCombustivel);
+begin
+  if AIdTanque <= 0 then
+    raise Exception.Create('Identificador do tanque inválido');
+
+  if not Assigned(ACombustivel) then
+    raise Exception.Create('Combustível não associado a bomba');
+
+  FId := AId;
+  FIdTanque := AIdTanque;
+  FCombustivel := ACombustivel;
+  FDescricao := ADescricao;
+end;
+
+end.

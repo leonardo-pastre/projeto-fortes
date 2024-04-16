@@ -1,0 +1,52 @@
+unit Model.Abastecimento;
+
+interface
+
+type
+  TDadosAbastecimento = record
+    Data: TDateTime;
+    IdBomba: Integer;
+    QuantidadeCombustivel: Double;
+    ValorAbastecido: Double;
+    PercentualImposto: Double;
+  end;
+
+  TAbastecimento = class
+  private
+    FValorImposto: Double;
+    FIdBomba: Integer;
+    FQuantidadeCombustivel: Double;
+    FValorAbastecido: Double;
+    FData: TDateTime;
+    FPercentualImposto: Double;
+  public
+    constructor Create(ADados: TDadosAbastecimento);
+    procedure CalcularImposto;
+    property Data: TDateTime read FData;
+    property IdBomba: Integer read FIdBomba;
+    property QuantidadeCombustivel: Double read FQuantidadeCombustivel;
+    property ValorAbastecido: Double read FValorAbastecido;
+    property PercentualImposto: Double read FPercentualImposto;
+    property ValorImposto: Double read FValorImposto;
+  end;
+
+implementation
+
+{ TAbastecimento }
+
+procedure TAbastecimento.CalcularImposto;
+begin
+  FValorImposto := FPercentualImposto / 100 * FValorAbastecido;
+end;
+
+constructor TAbastecimento.Create(ADados: TDadosAbastecimento);
+begin
+  FData := ADados.Data;
+  FIdBomba := ADados.IdBomba;
+  FQuantidadeCombustivel := ADados.QuantidadeCombustivel;
+  FValorAbastecido := ADados.ValorAbastecido;
+  FPercentualImposto := ADados.PercentualImposto;
+  FValorImposto := 0;
+end;
+
+end.

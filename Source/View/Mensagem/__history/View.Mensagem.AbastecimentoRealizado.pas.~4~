@@ -1,0 +1,54 @@
+unit View.Mensagem.AbastecimentoRealizado;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TMensagemAbastecimentoRealizado = class(TForm)
+    Panel7: TPanel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Panel8: TPanel;
+    procedure Panel8Click(Sender: TObject);
+    procedure Panel8MouseEnter(Sender: TObject);
+    procedure Panel8MouseLeave(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure Show(ADescricaoBomba, ADescricaoCombustivel: string; AValorAbastecido: Double);
+  end;
+
+var
+  MensagemAbastecimentoRealizado: TMensagemAbastecimentoRealizado;
+
+implementation
+
+{$R *.dfm}
+
+procedure TMensagemAbastecimentoRealizado.Panel8Click(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TMensagemAbastecimentoRealizado.Panel8MouseEnter(Sender: TObject);
+begin
+  Panel8.Cursor := crHandPoint;
+end;
+
+procedure TMensagemAbastecimentoRealizado.Panel8MouseLeave(Sender: TObject);
+begin
+  Panel8.Cursor := crDefault;
+end;
+
+procedure TMensagemAbastecimentoRealizado.Show(ADescricaoBomba,
+  ADescricaoCombustivel: string; AValorAbastecido: Double);
+begin
+
+end;
+
+end.

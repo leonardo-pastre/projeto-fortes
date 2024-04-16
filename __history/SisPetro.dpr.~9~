@@ -1,0 +1,22 @@
+program SisPetro;
+
+uses
+  Vcl.Forms,
+  View.Principal in 'View\View.Principal.pas' {Principal},
+  View.Filtro.Relatorio.Abastecimentos in 'View\Relatorio\View.Filtro.Relatorio.Abastecimentos.pas' {FiltroRelatorioAbastecimentos},
+  View.Mensagem.AbastecimentoRealizado in 'View\Mensagem\View.Mensagem.AbastecimentoRealizado.pas' {MensagemAbastecimentoRealizado},
+  View.Relatorio.Abastecimentos in 'View\Relatorio\View.Relatorio.Abastecimentos.pas' {RelatorioAbastecimentos},
+  Data.Dados in 'Data\Data.Dados.pas' {Dados: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TPrincipal, Principal);
+  Application.CreateForm(TFiltroRelatorioAbastecimentos, FiltroRelatorioAbastecimentos);
+  Application.CreateForm(TMensagemAbastecimentoRealizado, MensagemAbastecimentoRealizado);
+  Application.CreateForm(TRelatorioAbastecimentos, RelatorioAbastecimentos);
+  Application.CreateForm(TDados, Dados);
+  Application.Run;
+end.

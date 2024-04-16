@@ -1,0 +1,299 @@
+object FormRelatorioAbastecimentos: TFormRelatorioAbastecimentos
+  Left = 0
+  Top = 0
+  Caption = 'FormRelatorioAbastecimentos'
+  ClientHeight = 605
+  ClientWidth = 795
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object RelatorioAbastecimentos: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    DataSource = Dados.dsRelatorioAbastecimentos
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    object RLBand1: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 90
+      BandType = btHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = False
+      object RLLabel1: TRLLabel
+        Left = 128
+        Top = 16
+        Width = 482
+        Height = 41
+        Caption = 'Relat'#243'rio de Abastecimentos'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -35
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLSystemInfo1: TRLSystemInfo
+        Left = 594
+        Top = 70
+        Width = 37
+        Height = 16
+        Info = itNow
+        Text = ''
+      end
+      object RLLabel8: TRLLabel
+        Left = 468
+        Top = 70
+        Width = 124
+        Height = 16
+        Caption = 'Relat'#243'rio gerado em:'
+      end
+    end
+    object RLGroup1: TRLGroup
+      Left = 38
+      Top = 128
+      Width = 718
+      Height = 118
+      DataFields = 'DATA'
+      object RLBand2: TRLBand
+        Left = 0
+        Top = 0
+        Width = 718
+        Height = 27
+        BandType = btHeader
+        Color = clActiveBorder
+        ParentColor = False
+        Transparent = False
+        object RLLabel2: TRLLabel
+          Left = 3
+          Top = 6
+          Width = 54
+          Height = 19
+          Caption = 'DATA:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBText1: TRLDBText
+          Left = 62
+          Top = 6
+          Width = 47
+          Height = 18
+          DataField = 'DATA'
+          DataSource = Dados.dsRelatorioAbastecimentos
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+          Transparent = False
+        end
+      end
+      object RLGroup2: TRLGroup
+        Left = 0
+        Top = 27
+        Width = 718
+        Height = 87
+        DataFields = 'TANQUE_ID'
+        object RLBand3: TRLBand
+          Left = 0
+          Top = 0
+          Width = 718
+          Height = 33
+          BandType = btHeader
+          object RLDBText2: TRLDBText
+            Left = 85
+            Top = 13
+            Width = 69
+            Height = 18
+            DataField = 'TANQUE'
+            DataSource = Dados.dsRelatorioAbastecimentos
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+            Text = ''
+          end
+          object RLLabel3: TRLLabel
+            Left = 3
+            Top = 13
+            Width = 78
+            Height = 19
+            Caption = 'TANQUE:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+        end
+        object RLBand4: TRLBand
+          Left = 0
+          Top = 33
+          Width = 718
+          Height = 26
+          BandType = btColumnHeader
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = False
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = True
+          object RLLabel4: TRLLabel
+            Left = 20
+            Top = 4
+            Width = 59
+            Height = 19
+            Caption = 'Bomba'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object RLLabel5: TRLLabel
+            Left = 322
+            Top = 4
+            Width = 80
+            Height = 19
+            Caption = 'Data/Hora'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object RLLabel6: TRLLabel
+            Left = 530
+            Top = 4
+            Width = 44
+            Height = 19
+            Caption = 'Valor'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+        end
+        object RLBand5: TRLBand
+          Left = 0
+          Top = 59
+          Width = 718
+          Height = 24
+          object RLDBText3: TRLDBText
+            Left = 20
+            Top = 4
+            Width = 52
+            Height = 16
+            DataField = 'BOMBA'
+            DataSource = Dados.dsRelatorioAbastecimentos
+            Text = ''
+          end
+          object RLDBText4: TRLDBText
+            Left = 322
+            Top = 4
+            Width = 82
+            Height = 16
+            DataField = 'DATA_HORA'
+            DataSource = Dados.dsRelatorioAbastecimentos
+            Text = ''
+          end
+          object RLDBText5: TRLDBText
+            Left = 530
+            Top = 4
+            Width = 93
+            Height = 16
+            DataField = 'VALOR_PAGO'
+            DataSource = Dados.dsRelatorioAbastecimentos
+            DisplayMask = 'R$ #0.00'
+            Text = ''
+          end
+        end
+      end
+    end
+    object RLBand6: TRLBand
+      Left = 38
+      Top = 246
+      Width = 718
+      Height = 44
+      BandType = btSummary
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = True
+      Borders.DrawRight = False
+      Borders.DrawBottom = False
+      object RLDBResult1: TRLDBResult
+        Left = 530
+        Top = 17
+        Width = 197
+        Height = 22
+        DataField = 'VALOR_PAGO'
+        DataSource = Dados.dsRelatorioAbastecimentos
+        DisplayMask = 'R$ #0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -19
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLLabel7: TRLLabel
+        Left = 20
+        Top = 17
+        Width = 83
+        Height = 22
+        Caption = 'TOTAL: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -19
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object RLBand7: TRLBand
+      Left = 38
+      Top = 290
+      Width = 718
+      Height = 26
+      BandType = btFooter
+      object RLSystemInfo2: TRLSystemInfo
+        Left = 323
+        Top = 5
+        Width = 87
+        Height = 16
+        Info = itPageNumber
+        Text = ''
+      end
+    end
+  end
+end

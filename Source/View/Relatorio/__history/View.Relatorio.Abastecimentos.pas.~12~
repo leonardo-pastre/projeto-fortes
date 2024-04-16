@@ -1,0 +1,93 @@
+unit View.Relatorio.Abastecimentos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, RLReport, Data.Dados, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  FireDAC.Comp.UI;
+
+type
+  TFormRelatorioAbastecimentos = class(TForm)
+    RelatorioAbastecimentos: TRLReport;
+    RLBand1: TRLBand;
+    RLLabel1: TRLLabel;
+    RLGroup1: TRLGroup;
+    RLBand2: TRLBand;
+    RLLabel2: TRLLabel;
+    RLDBText1: TRLDBText;
+    RLGroup2: TRLGroup;
+    RLBand3: TRLBand;
+    RLDBText2: TRLDBText;
+    RLLabel3: TRLLabel;
+    RLBand4: TRLBand;
+    RLLabel4: TRLLabel;
+    RLLabel5: TRLLabel;
+    RLLabel6: TRLLabel;
+    RLBand5: TRLBand;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    RLDBText5: TRLDBText;
+    RLBand6: TRLBand;
+    RLDBResult1: TRLDBResult;
+    RLLabel7: TRLLabel;
+    RLSystemInfo1: TRLSystemInfo;
+    RLLabel8: TRLLabel;
+    RLBand7: TRLBand;
+    RLSystemInfo2: TRLSystemInfo;
+    FDConnection: TFDConnection;
+    FDPhysSQLiteDriverLink: TFDPhysSQLiteDriverLink;
+    FDGUIxWaitCursor: TFDGUIxWaitCursor;
+    dsRelatorioAbastecimentos: TDataSource;
+    qryRelatorioAbastecimentos: TFDQuery;
+  private
+
+  public
+    procedure FiltrarRelatorioAbastecimentos(const ADataInicial, ADataFinal: TDateTime);
+  end;
+
+var
+  FormRelatorioAbastecimentos: TFormRelatorioAbastecimentos;
+
+implementation
+
+{$R *.dfm}
+
+{ TFormRelatorioAbastecimentos }
+
+procedure TFormRelatorioAbastecimentos.FiltrarRelatorioAbastecimentos(
+  const ADataInicial, ADataFinal: TDateTime);
+begin
+  qryRelatorioAbastecimentos.Close;
+  qryRelatorioAbastecimentos.SQL.Clear;
+  qryRelatorioAbastecimentos.SQL.Add('SELECT');
+  qryRelatorioAbastecimentos.SQL.Add('  DATE(A.DATA) AS DATA,');
+  qryRelatorioAbastecimentos.SQL.Add('  DATETIME(A.DATA) AS DATA_HORA,');
+  qryRelatorioAbastecimentos.SQL.Add('  T.TANQUE_ID,');
+  qryRelatorioAbastecimentos.SQL.Add('  T.DESCRICAO AS TANQUE,');
+  qryRelatorioAbastecimentos.SQL.Add('  B.DESCRICAO AS BOMBA,');
+  qryRelatorioAbastecimentos.SQL.Add('  B.BOMBA_ID,');
+  qryRelatorioAbastecimentos.SQL.Add('  A.VALOR_PAGO');
+  qryRelatorioAbastecimentos.SQL.Add('FROM');
+  qryRelatorioAbastecimentos.SQL.Add('  ABASTECIMENTO A');
+  qryRelatorioAbastecimentos.SQL.Add('  INNER JOIN BOMBA B');
+  qryRelatorioAbastecimentos.SQL.Add('    ON B.BOMBA_ID = A.BOMBA_ID');
+  qryRelatorioAbastecimentos.SQL.Add('  INNER JOIN TANQUE T');
+  qryRelatorioAbastecimentos.SQL.Add('    ON T.TANQUE_ID = B.TANQUE_ID');
+  qryRelatorioAbastecimentos.SQL.Add('WHERE');
+  qryRelatorioAbastecimentos.SQL.Add('  DATE(A.DATA) BETWEEN :DATA_INICIAL AND :DATA_FINAL');
+  qryRelatorioAbastecimentos.SQL.Add('GROUP BY');
+  qryRelatorioAbastecimentos.SQL.Add('  A.DATA, T.TANQUE_ID, B.BOMBA_ID');
+  qryRelatorioAbastecimentos.SQL.Add('ORDER BY');
+  qryRelatorioAbastecimentos.SQL.Add('  A.DATA, T.TANQUE_ID, B.BOMBA_ID');
+  qryRelatorioAbastecimentos.Params.ParamByName('DATA_INICIAL').AsDate := ADataInicial;
+  qryRelatorioAbastecimentos.Params.ParamByName('DATA_FINAL').AsDate := ADataFinal;
+  qryRelatorioAbastecimentos.Open;
+end;
+
+end.

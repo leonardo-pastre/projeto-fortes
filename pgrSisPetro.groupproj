@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{885BF491-B3F9-4E6B-B8D6-1D98793F752E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Test\SisPetroTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Source\SisPetro.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SisPetroTest">
+        <MSBuild Projects="Test\SisPetroTest.dproj"/>
+    </Target>
+    <Target Name="SisPetroTest:Clean">
+        <MSBuild Projects="Test\SisPetroTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SisPetroTest:Make">
+        <MSBuild Projects="Test\SisPetroTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SisPetro">
+        <MSBuild Projects="Source\SisPetro.dproj"/>
+    </Target>
+    <Target Name="SisPetro:Clean">
+        <MSBuild Projects="Source\SisPetro.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SisPetro:Make">
+        <MSBuild Projects="Source\SisPetro.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SisPetroTest;SisPetro"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SisPetroTest:Clean;SisPetro:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SisPetroTest:Make;SisPetro:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

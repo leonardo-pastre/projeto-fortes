@@ -1,0 +1,258 @@
+unit View.Principal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ExtCtrls,
+  System.UITypes, Vcl.ComCtrls, Vcl.Imaging.pngimage, System.Math,
+  Model.Abastecimento, Model.Bomba, Model.Combustivel, Data.Dados;
+
+type
+  TPrincipal = class(TForm)
+    MainMenu1: TMainMenu;
+    Relatrios1: TMenuItem;
+    mniAbastecimentos: TMenuItem;
+    GroupBox1: TGroupBox;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Panel2: TPanel;
+    Label2: TLabel;
+    GroupBox2: TGroupBox;
+    Panel3: TPanel;
+    Label3: TLabel;
+    Panel4: TPanel;
+    Label4: TLabel;
+    lblStatusBomba1: TLabel;
+    lblStatusBomba2: TLabel;
+    lblStatusBomba3: TLabel;
+    lblStatusBomba4: TLabel;
+    Panel5: TPanel;
+    lblValorGasolina: TLabel;
+    Panel6: TPanel;
+    lblValorDiesel: TLabel;
+    edtValorAbastecimento: TEdit;
+    btnAbastecer: TPanel;
+    edtDataAbastecimento: TDateTimePicker;
+    cbxSelecionarData: TCheckBox;
+    Label5: TLabel;
+    Image1: TImage;
+    procedure mniAbastecimentosClick(Sender: TObject);
+    procedure BombaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure BombaMouseEnter(Sender: TObject);
+    procedure BombaMouseLeave(Sender: TObject);
+    procedure btnAbastecerClick(Sender: TObject);
+    procedure edtValorAbastecimentoKeyPress(Sender: TObject; var Key: Char);
+    procedure btnAbastecerMouseEnter(Sender: TObject);
+    procedure btnAbastecerMouseLeave(Sender: TObject);
+    procedure cbxSelecionarDataClick(Sender: TObject);
+  private
+    FBomba: TBomba;
+    procedure AlterarStatusBomba(AIdBomba: Integer; AEstaAbastecendo: Boolean);
+    procedure CarregarPanelValoresCombustivel;
+    procedure ExibirMensagemAbastecimento(ADescricaoBomba, ADescricaoCombustivel: string; AValorAbastecido: Double);
+    procedure LiberarBomba;
+  public
+
+  end;
+
+const
+  ID_GASOLINA = 1;
+  ID_DIESEL = 2;
+  PERCENTUAL_IMPOSTO = 13;
+
+var
+  Principal: TPrincipal;
+
+implementation
+
+uses
+  View.Filtro.Relatorio.Abastecimentos, View.Mensagem.AbastecimentoRealizado;
+
+{$R *.dfm}
+
+procedure TPrincipal.AlterarStatusBomba(AIdBomba: Integer; AEstaAbastecendo: Boolean);
+var
+  LStatus: string;
+begin
+  LStatus := IfThen(AEstaAbastecendo, 'Abastecendo', 'Disponível');
+
+  case AIdBomba of
+    1: lblStatusBomba1.Caption := LStatus;
+    2: lblStatusBomba2.Caption := LStatus;
+    3: lblStatusBomba3.Caption := LStatus;
+    4: lblStatusBomba4.Caption := LStatus;
+  end;
+end;
+
+procedure TPrincipal.BombaClick(Sender: TObject);
+begin
+  if not Assigned(FBomba) then
+  begin
+    FBomba := Dados.GetBomba(TPanel(Sender).Tag);
+    AlterarStatusBomba(FBomba.Id, True);
+    Exit;
+  end;
+
+  if (Assigned(FBomba)) and (FBomba.Id <> TPanel(Sender).Tag) then
+  begin
+    ShowMessage('Já existe um abastecimento em andamento');
+    Exit;
+  end;
+
+  if (Assigned(FBomba)) and (FBomba.Id = TPanel(Sender).Tag) then
+  begin
+    if MessageDlg('Deseja cancelar o abastecimento ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+      AlterarStatusBomba(FBomba.Id, False);
+      FreeAndNil(FBomba);
+      Exit;
+    end;
+  end;
+end;
+
+procedure TPrincipal.FormCreate(Sender: TObject);
+begin
+  FBomba := nil;
+  CarregarPanelValoresCombustivel;
+end;
+
+procedure TPrincipal.LiberarBomba;
+begin
+  edtValorAbastecimento.Clear;
+  AlterarStatusBomba(FBomba.Id, False);
+  FreeAndNil(FBomba);
+end;
+
+procedure TPrincipal.mniAbastecimentosClick(Sender: TObject);
+var
+  LFiltroRelatorio: TFiltroRelatorioAbastecimentos;
+begin
+  LFiltroRelatorio := TFiltroRelatorioAbastecimentos.Create(Self);
+  try
+    LFiltroRelatorio.ShowModal;
+  finally
+    FreeAndNil(LFiltroRelatorio);
+  end;
+end;
+
+procedure TPrincipal.btnAbastecerClick(Sender: TObject);
+var
+  LValorPago: Double;
+  LDadosAbastecimento: TDadosAbastecimento;
+  LAbastecimento: TAbastecimento;
+begin
+  if not TryStrToFloat(edtValorAbastecimento.Text, LValorPago) or (LValorPago <= 0) then
+  begin
+    ShowMessage('Valor do abastecimento inválido');
+    edtValorAbastecimento.Clear;
+    Exit;
+  end;
+
+  if not Assigned(FBomba) then
+  begin
+    ShowMessage('Selecione a bomba para realizar o abastecimento');
+    Exit;
+  end;
+
+  if Trunc(edtDataAbastecimento.DateTime) > Trunc(Now) then
+  begin
+    ShowMessage('Não é permitido realizar um abastecimento com data futura');
+    Exit;
+  end;
+
+  if Trunc(edtDataAbastecimento.DateTime) <> Trunc(Now) then
+    if MessageDlg('A data do abastecimento é diferente da data atual! Deseja prosseguir ?',
+      mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+    begin
+      Exit;
+    end;
+
+  LDadosAbastecimento.Data := IfThen(cbxSelecionarData.Checked, edtDataAbastecimento.DateTime, Now);
+  LDadosAbastecimento.IdBomba := FBomba.Id;
+  LDadosAbastecimento.ValorAbastecido := LValorPago;
+  LDadosAbastecimento.ValorCombustivel := FBomba.Combustivel.Valor;
+  LDadosAbastecimento.PercentualImposto := PERCENTUAL_IMPOSTO;
+
+  LAbastecimento := TAbastecimento.Create(LDadosAbastecimento);
+
+  if Dados.GravarAbastecimento(LAbastecimento) then
+  begin
+    ExibirMensagemAbastecimento(FBomba.Descricao, FBomba.Combustivel.Nome, LValorPago);
+    LiberarBomba;
+  end
+  else
+    ShowMessage('Erro ao gravar o abastecimento');
+end;
+
+procedure TPrincipal.btnAbastecerMouseEnter(Sender: TObject);
+begin
+  btnAbastecer.Cursor := crHandPoint;
+end;
+
+procedure TPrincipal.btnAbastecerMouseLeave(Sender: TObject);
+begin
+  btnAbastecer.Cursor := crDefault;
+end;
+
+procedure TPrincipal.BombaMouseEnter(Sender: TObject);
+begin
+  TPanel(Sender).Cursor := crHandPoint;
+end;
+
+procedure TPrincipal.BombaMouseLeave(Sender: TObject);
+begin
+  TPanel(Sender).Cursor := crDefault;
+end;
+
+procedure TPrincipal.CarregarPanelValoresCombustivel;
+
+  function GetValorCombustivel(const AId: Integer): Double;
+  var
+    LCombustivel: TCombustivel;
+  begin
+    Result := 0;
+
+    LCombustivel := Dados.GetCombustivel(AId);
+
+    if Assigned(LCombustivel) then
+      Result := LCombustivel.Valor;
+  end;
+
+begin
+  lblValorGasolina.Caption := FormatFloat('R$ #0.00', GetValorCombustivel(ID_GASOLINA));
+  lblValorDiesel.Caption := FormatFloat('R$ #0.00', GetValorCombustivel(ID_DIESEL));
+end;
+
+procedure TPrincipal.cbxSelecionarDataClick(Sender: TObject);
+begin
+  if cbxSelecionarData.Checked then
+    edtDataAbastecimento.Enabled := True
+  else
+  begin
+    edtDataAbastecimento.DateTime := Now;
+    edtDataAbastecimento.Enabled := False;
+  end;
+end;
+
+procedure TPrincipal.edtValorAbastecimentoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', ',', #8]) then
+    Key := #0;
+end;
+
+procedure TPrincipal.ExibirMensagemAbastecimento(ADescricaoBomba, ADescricaoCombustivel: string; AValorAbastecido: Double);
+var
+  LMensagem: TMensagemAbastecimentoRealizado;
+begin
+  LMensagem := TMensagemAbastecimentoRealizado.Create(Self);
+  try
+    LMensagem.Show(ADescricaoBomba, ADescricaoCombustivel, AValorAbastecido);
+  finally
+    FreeAndNil(LMensagem);
+  end;
+end;
+
+end.

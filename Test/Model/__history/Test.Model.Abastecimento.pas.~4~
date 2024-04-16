@@ -1,0 +1,58 @@
+unit Test.Model.Abastecimento;
+
+interface
+uses
+  DUnitX.TestFramework,
+  Model.Abastecimento,
+  System.SysUtils;
+
+type
+  [TestFixture]
+  TTestModelAbastecimento = class(TObject)
+  private
+    FAbastecimento: TAbastecimento;
+  public
+    [Setup]
+    procedure Setup;
+    [TearDown]
+    procedure TearDown;
+    [Test]
+    procedure ValidarCalculoImposto;
+    [Test]
+    procedure ValidarCalculoDaQuantidadeDeCombustivel;
+  end;
+
+implementation
+
+procedure TTestModelAbastecimento.Setup;
+var
+  LDados: TDadosAbastecimento;
+begin
+  LDados.Data := Now;
+  LDados.IdBomba := 1;
+  LDados.ValorAbastecido := 50;
+  LDados.ValorCombustivel := 4;
+  LDados.PercentualImposto := 3;
+
+  FAbastecimento := TAbastecimento.Create(LDados);
+end;
+
+procedure TTestModelAbastecimento.TearDown;
+begin
+  FreeAndNil(FAbastecimento);
+end;
+
+procedure TTestModelAbastecimento.ValidarCalculoDaQuantidadeDeCombustivel;
+begin
+  Assert.AreEqual(FAbastecimento.QuantidadeCombustivel, 12.5);
+end;
+
+procedure TTestModelAbastecimento.ValidarCalculoImposto;
+begin
+  FAbastecimento.CalcularImposto;
+  Assert.AreEqual(FAbastecimento.ValorImposto, 1.5);
+end;
+
+initialization
+  TDUnitX.RegisterTestFixture(TTestModelAbastecimento);
+end.

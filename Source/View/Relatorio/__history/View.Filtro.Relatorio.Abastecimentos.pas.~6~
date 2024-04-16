@@ -1,0 +1,52 @@
+unit View.Filtro.Relatorio.Abastecimentos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
+
+type
+  TFiltroRelatorioAbastecimentos = class(TForm)
+    GroupBox1: TGroupBox;
+    edtDataInicial: TDateTimePicker;
+    edtDataFinal: TDateTimePicker;
+    btnGerarRelatorio: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    procedure btnGerarRelatorioClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FiltroRelatorioAbastecimentos: TFiltroRelatorioAbastecimentos;
+
+implementation
+
+uses
+  View.Relatorio.Abastecimentos;
+
+{$R *.dfm}
+
+procedure TFiltroRelatorioAbastecimentos.btnGerarRelatorioClick(Sender: TObject);
+begin
+  if edtDataInicial.DateTime > edtDataFinal.DateTime then
+  begin
+    ShowMessage('A data inicial não pode ser maior que a data final');
+    Abort;
+  end;
+
+  if edtDataInicial.DateTime > Now then
+  begin
+    ShowMessage('A data inicial não pode ser maior que a data atual');
+    Abort;
+  end;
+
+  FormRelatorioAbastecimentos.RelatorioAbastecimentos.Preview();
+end;
+
+end.

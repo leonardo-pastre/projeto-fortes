@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/04/04 11:14:45.000.462,=C:\Users\DELL\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/04/16 01:07:55.000.202,C:\Users\DELL\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\DELL\Desktop\SisPetro\Test\SisPetroTest.dproj</Transaction>
+    <Transaction>2024/04/16 01:15:41.290,=C:\Users\DELL\Desktop\SisPetro\Test\Unit1.pas</Transaction>
+    <Transaction>2024/04/16 01:16:48.553,C:\Users\DELL\Desktop\SisPetro\Test\Model\Test.Model.Abastecimento.pas=C:\Users\DELL\Desktop\SisPetro\Test\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
